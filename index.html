@@ -19,8 +19,8 @@
       </div>
 
       <div>
-        <label for="multiplier" class="block text-green-400 font-semibold mb-1">Multiplier (1.2x to 15x):</label>
-        <input type="range" id="multiplier" min="1.2" max="15" step="0.2" value="1.2" oninput="updateMultiplierLabel()" class="w-full h-2 rounded-lg appearance-none bg-green-500">
+        <label for="multiplier" class="block text-green-400 font-semibold mb-1">Multiplier (1.2x to 40x):</label>
+        <input type="range" id="multiplier" min="1.2" max="40" step="0.2" value="1.2" oninput="updateMultiplierLabel()" class="w-full h-2 rounded-lg appearance-none bg-green-500">
         <p class="text-sm mt-2 text-gray-400">Current Multiplier: <span id="multiplierLabel" class="text-green-400 font-bold">1.2</span>x</p>
       </div>
 
@@ -50,7 +50,9 @@
       const multiplier = document.getElementById("multiplier").value;
       document.getElementById("multiplierLabel").textContent = multiplier;
       const fdvScaled = FDV * multiplier;
+      const tokenPrice = fdvScaled / TOTAL_TOKENS;
       document.getElementById("fdvScaled").textContent = `$${fdvScaled.toLocaleString()}`;
+      document.getElementById("tokenPrice").textContent = `$${tokenPrice.toFixed(4)}`;
     }
 
     function calculateROI() {
@@ -82,3 +84,5 @@
   </script>
 </body>
 </html>
+
+
