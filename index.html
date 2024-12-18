@@ -3,13 +3,15 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Legion ROI</title>
+  <title>Fuel Airdrop ROI Calculator</title>
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-black text-gray-200 font-sans">
   <div class="container mx-auto mt-12 px-6 py-8 bg-gray-900 rounded-lg shadow-lg max-w-md">
-    <h1 class="text-2xl font-bold text-center text-green-400 mb-4">Legion Fuel Investment ROI Calculator</h1>
-    <p class="text-sm text-center text-gray-400 mb-6">Enter your investment, adjust the multiplier, and view token price and ROI.</p>
+    <h1 class="text-2xl font-bold text-center text-green-400 mb-4">Fuel Airdrop ROI Calculator</h1>
+    <p class="text-sm text-center text-gray-400 mb-6">
+      Enter your investment and airdrop allocation. Calculations are based on an initial $200M FDV.
+    </p>
 
     <!-- Input Fields -->
     <div class="space-y-4">
@@ -34,17 +36,27 @@
         <p class="text-sm text-gray-400">Token Price: <span id="tokenPrice" class="text-green-400 font-bold">$0.02</span></p>
       </div>
 
-      <button onclick="calculateROI()" class="w-full py-2 bg-green-500 hover:bg-green-400 text-black font-bold rounded-md shadow-md transition-transform transform hover:-translate-y-1">Calculate ROI</button>
+      <button onclick="calculateROI()" class="w-full py-2 bg-green-500 hover:bg-green-400 text-black font-bold rounded-md shadow-md transition-transform transform hover:-translate-y-1">Calculate</button>
     </div>
 
     <!-- Results -->
-    <div id="results" class="mt-6 p-4 bg-gray-800 rounded-md shadow-md hidden">
-      <p class="text-sm text-gray-400"><strong class="text-green-400">Initial Investment:</strong> $<span id="initialInvestment" class="text-gray-200"></span></p>
-      <p class="text-sm text-gray-400"><strong class="text-green-400">Airdrop Value:</strong> $<span id="airdropValue" class="text-gray-200"></span></p>
-      <p class="text-sm text-gray-400"><strong class="text-green-400">Total Value:</strong> $<span id="fdvBalance" class="text-gray-200"></span></p>
-      <p class="mt-4 text-3xl font-extrabold text-green-400"><span>Total ROI:</span> $<span id="roi"></span></p>
+    <div id="results" class="mt-6 p-6 bg-gray-800 rounded-md shadow-md hidden text-center">
+      <p class="text-sm text-gray-400 mb-4"><strong class="text-green-400">Initial Investment:</strong> $<span id="initialInvestment" class="text-gray-200"></span></p>
+      <p class="text-sm text-gray-400 mb-4"><strong class="text-green-400">Airdrop Value:</strong> $<span id="airdropValue" class="text-gray-200"></span></p>
+      
+      <!-- Total Value Box -->
+      <div class="mt-4 p-4 bg-green-500 rounded-md shadow-lg">
+        <p class="text-xl font-extrabold text-black">Total Value: $<span id="fdvBalance"></span></p>
+      </div>
     </div>
   </div>
+
+  <!-- Footer -->
+  <footer class="mt-12 text-center">
+    <p class="text-sm text-gray-400">
+      Built by <a href="https://x.com/dustybeerbong" target="_blank" class="text-green-400 hover:underline">Sadpepe.exe</a>
+    </p>
+  </footer>
 
   <script>
     const FDV = 200000000; // Fully Diluted Valuation
@@ -65,12 +77,6 @@
       const airdropTokens = parseFloat(document.getElementById("airdrop").value) || 0;
       const multiplier = parseFloat(document.getElementById("multiplier").value);
 
-      // Validate investment input
-      if (initialInvestment <= 0) {
-        alert("Please enter a valid investment amount.");
-        return;
-      }
-
       // FDV calculations
       const fdvScaled = FDV * multiplier;
       const tokenPrice = fdvScaled / TOTAL_TOKENS;
@@ -80,14 +86,13 @@
       const fdvBalance = totalTokensPurchased * tokenPrice;
       const airdropValue = airdropTokens * tokenPrice;
 
-      // Total ROI including airdrop
-      const totalROI = (fdvBalance + airdropValue) - initialInvestment;
+      // Total Value
+      const totalValue = fdvBalance + airdropValue;
 
       // Update results
       document.getElementById("initialInvestment").textContent = initialInvestment.toFixed(2);
-      document.getElementById("fdvBalance").textContent = (fdvBalance + airdropValue).toFixed(2);
+      document.getElementById("fdvBalance").textContent = totalValue.toFixed(2);
       document.getElementById("airdropValue").textContent = airdropValue.toFixed(2);
-      document.getElementById("roi").textContent = totalROI.toFixed(2);
 
       // Show results
       document.getElementById("results").classList.remove("hidden");
