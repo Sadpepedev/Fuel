@@ -19,6 +19,11 @@
       </div>
 
       <div>
+        <label for="airdrop" class="block text-green-400 font-semibold mb-1">Fuel Airdrop Allocation (optional):</label>
+        <input type="number" id="airdrop" placeholder="Enter airdrop tokens" class="w-full p-2 rounded-md bg-gray-800 text-gray-200 focus:outline-none focus:ring-2 focus:ring-green-400">
+      </div>
+
+      <div>
         <label for="multiplier" class="block text-green-400 font-semibold mb-1">Multiplier (1.2x to 40x):</label>
         <input type="range" id="multiplier" min="1.2" max="40" step="0.2" value="1.2" oninput="updateMultiplierLabel()" class="w-full h-2 rounded-lg appearance-none bg-green-500">
         <p class="text-sm mt-2 text-gray-400">Current Multiplier: <span id="multiplierLabel" class="text-green-400 font-bold">1.2</span>x</p>
@@ -35,8 +40,9 @@
     <!-- Results -->
     <div id="results" class="mt-6 p-4 bg-gray-800 rounded-md shadow-md hidden">
       <p class="text-sm text-gray-400"><strong class="text-green-400">Initial Investment:</strong> $<span id="initialInvestment" class="text-gray-200"></span></p>
+      <p class="text-sm text-gray-400"><strong class="text-green-400">Airdrop Value:</strong> $<span id="airdropValue" class="text-gray-200"></span></p>
       <p class="text-sm text-gray-400"><strong class="text-green-400">Total Value:</strong> $<span id="fdvBalance" class="text-gray-200"></span></p>
-      <p class="text-sm text-gray-400"><strong class="text-green-400">Total ROI:</strong> $<span id="roi" class="text-gray-200"></span></p>
+      <p class="mt-4 text-3xl font-extrabold text-green-400"><span>Total ROI:</span> $<span id="roi"></span></p>
     </div>
   </div>
 
@@ -55,26 +61,33 @@
     }
 
     function calculateROI() {
-      const initialInvestment = parseFloat(document.getElementById("investment").value);
+      const initialInvestment = parseFloat(document.getElementById("investment").value) || 0;
+      const airdropTokens = parseFloat(document.getElementById("airdrop").value) || 0;
       const multiplier = parseFloat(document.getElementById("multiplier").value);
 
-      if (isNaN(initialInvestment) || initialInvestment <= 0) {
+      // Validate investment input
+      if (initialInvestment <= 0) {
         alert("Please enter a valid investment amount.");
         return;
       }
 
-      // Calculate FDV balance
-      const totalTokensPurchased = initialInvestment / TOKEN_COST;
-      const fdvBalance = totalTokensPurchased * (FDV / TOTAL_TOKENS) * multiplier;
-      const tokenPrice = (FDV * multiplier) / TOTAL_TOKENS;
+      // FDV calculations
+      const fdvScaled = FDV * multiplier;
+      const tokenPrice = fdvScaled / TOTAL_TOKENS;
 
-      // Calculate ROI
-      const roi = fdvBalance - initialInvestment;
+      // Investment and airdrop calculations
+      const totalTokensPurchased = initialInvestment / TOKEN_COST;
+      const fdvBalance = totalTokensPurchased * tokenPrice;
+      const airdropValue = airdropTokens * tokenPrice;
+
+      // Total ROI including airdrop
+      const totalROI = (fdvBalance + airdropValue) - initialInvestment;
 
       // Update results
       document.getElementById("initialInvestment").textContent = initialInvestment.toFixed(2);
-      document.getElementById("fdvBalance").textContent = fdvBalance.toFixed(2);
-      document.getElementById("roi").textContent = roi.toFixed(2);
+      document.getElementById("fdvBalance").textContent = (fdvBalance + airdropValue).toFixed(2);
+      document.getElementById("airdropValue").textContent = airdropValue.toFixed(2);
+      document.getElementById("roi").textContent = totalROI.toFixed(2);
 
       // Show results
       document.getElementById("results").classList.remove("hidden");
@@ -82,6 +95,4 @@
   </script>
 </body>
 </html>
-
-
 
