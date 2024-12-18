@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fuel Seed Round ROI Calculator</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #000000;
+      color: #e2e8f0;
+    }
+    .container {
+      max-width: 600px;
+      margin: 2rem auto;
+      padding: 1.5rem;
+      background: #0c0c0d;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+      border: 2px solid #00ffbf;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    h1 {
+      color: #00ffbf;
+      text-align: center;
+      font-size: 2rem;
+      margin-bottom: 1rem;
+      font-weight: bold;
+    }
+    input, button {
+      width: calc(100% - 20px);
+      max-width: 500px;
+      margin: 0.5rem 0;
+      padding: 0.75rem;
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+      text-align: center;
+    }
+    input {
+      background: #1a1a1d;
+      color: #ffffff;
+      border: 1px solid #00ffbf;
+    }
+    input[type="range"] {
+      -webkit-appearance: none;
+      appearance: none;
+      height: 12px;
+      background: #00ffbf;
+      border-radius: 6px;
+      outline: none;
+      margin-top: 10px;
+    }
+    input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 22px;
+      height: 22px;
+      background: #00ffbf;
+      border: 2px solid #000000;
+      border-radius: 50%;
+      cursor: pointer;
+    }
+    input[type="range"]::-moz-range-thumb {
+      width: 22px;
+      height: 22px;
+      background: #00ffbf;
+      border: 2px solid #000000;
+      border-radius: 50%;
+      cursor: pointer;
+    }
+    button {
+      background: linear-gradient(90deg, #00ffbf, #00e6ac);
+      color: #000000;
+      font-weight: bold;
+      cursor: pointer;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      box-shadow: 0 4px 8px rgba(0, 255, 191, 0.4);
+    }
+    button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 12px rgba(0, 255, 191, 0.6);
+    }
+    .result {
+      margin-top: 1rem;
+      padding: 1rem;
+      background: #1a1a1d;
+      border-radius: 8px;
+      border: 1px solid #00ffbf;
+      color: #ffffff;
+      width: 100%;
+      text-align: center;
+    }
+    label {
+      color: #00ffbf;
+      font-weight: bold;
+    }
+    p {
+      margin: 0.5rem 0;
+      color: #b0f0e0;
+    }
+    span {
+      font-weight: bold;
+      color: #00ffbf;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Fuel Seed Round ROI Calculator</h1>
+    <p>Enter your initial investment and adjust the multiplier to calculate your ROI.</p>
+
+    <!-- Input Fields -->
+    <label for="investment">Initial Investment ($):</label>
+    <input type="number" id="investment" placeholder="Enter your investment">
+
+    <label for="multiplier">Multiplier (1.2x to 15x):</label>
+    <input type="range" id="multiplier" min="1.2" max="15" step="0.2" value="1.2" oninput="updateMultiplierLabel()">
+    <p>Current Multiplier: <span id="multiplierLabel">1.2</span>x</p>
+    <p>FDV Scaled with Multiplier: <span>$<span id="fdvScaled">240,000,000</span></span></p>
+
+    <button onclick="calculateROI()">Calculate ROI</button>
+
+    <!-- Results -->
+    <div id="results" class="result" style="display: none;">
+      <p><strong>Initial Investment:</strong> $<span id="initialInvestment"></span></p>
+      <p><strong>FDV Balance:</strong> $<span id="fdvBalance"></span></p>
+      <p><strong>ROI:</strong> $<span id="roi"></span></p>
+    </div>
+  </div>
+
+  <script>
+    const FDV = 200000000; // Fully Diluted Valuation
+    const TOTAL_TOKENS = 10000000000; // Total tokens
+    const TOKEN_COST = 0.02; // Cost per token in dollars
+
+    function updateMultiplierLabel() {
+      const multiplier = document.getElementById("multiplier").value;
+      document.getElementById("multiplierLabel").textContent = multiplier;
+      const fdvScaled = FDV * multiplier;
+      document.getElementById("fdvScaled").textContent = fdvScaled.toLocaleString();
+    }
+
+    function calculateROI() {
+      const initialInvestment = parseFloat(document.getElementById("investment").value);
+      const multiplier = parseFloat(document.getElementById("multiplier").value);
+
+      if (isNaN(initialInvestment) || initialInvestment <= 0) {
+        alert("Please enter a valid investment amount.");
+        return;
+      }
+
+      // Calculate FDV balance
+      const totalTokensPurchased = initialInvestment / TOKEN_COST;
+      const fdvBalance = totalTokensPurchased * (FDV / TOTAL_TOKENS) * multiplier;
+
+      // Calculate ROI
+      const roi = fdvBalance - initialInvestment;
+
+      // Update results
+      document.getElementById("initialInvestment").textContent = initialInvestment.toFixed(2);
+      document.getElementById("fdvBalance").textContent = fdvBalance.toFixed(2);
+      document.getElementById("roi").textContent = roi.toFixed(2);
+
+      // Show results
+      document.getElementById("results").style.display = "block";
+    }
+  </script>
+</body>
+</html>
