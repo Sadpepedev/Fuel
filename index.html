@@ -3,133 +3,41 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Legion ROI</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 0;
-      background-color: #000000;
-      color: #e2e8f0;
-    }
-    .container {
-      max-width: 600px;
-      margin: 2rem auto;
-      padding: 1.5rem;
-      background: #0c0c0d;
-      border-radius: 12px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
-      border: 2px solid #00ffbf;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-    h1 {
-      color: #00ffbf;
-      text-align: center;
-      font-size: 2rem;
-      margin-bottom: 1rem;
-      font-weight: bold;
-    }
-    input, button {
-      width: calc(100% - 20px);
-      max-width: 500px;
-      margin: 0.5rem 0;
-      padding: 0.75rem;
-      border: none;
-      border-radius: 8px;
-      font-size: 1rem;
-      text-align: center;
-    }
-    input {
-      background: #1a1a1d;
-      color: #ffffff;
-      border: 1px solid #00ffbf;
-    }
-    input[type="range"] {
-      -webkit-appearance: none;
-      appearance: none;
-      height: 12px;
-      background: #00ffbf;
-      border-radius: 6px;
-      outline: none;
-      margin-top: 10px;
-    }
-    input[type="range"]::-webkit-slider-thumb {
-      -webkit-appearance: none;
-      appearance: none;
-      width: 22px;
-      height: 22px;
-      background: #00ffbf;
-      border: 2px solid #000000;
-      border-radius: 50%;
-      cursor: pointer;
-    }
-    input[type="range"]::-moz-range-thumb {
-      width: 22px;
-      height: 22px;
-      background: #00ffbf;
-      border: 2px solid #000000;
-      border-radius: 50%;
-      cursor: pointer;
-    }
-    button {
-      background: linear-gradient(90deg, #00ffbf, #00e6ac);
-      color: #000000;
-      font-weight: bold;
-      cursor: pointer;
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
-      box-shadow: 0 4px 8px rgba(0, 255, 191, 0.4);
-    }
-    button:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 6px 12px rgba(0, 255, 191, 0.6);
-    }
-    .result {
-      margin-top: 1rem;
-      padding: 1rem;
-      background: #1a1a1d;
-      border-radius: 8px;
-      border: 1px solid #00ffbf;
-      color: #ffffff;
-      width: 100%;
-      text-align: center;
-    }
-    label {
-      color: #00ffbf;
-      font-weight: bold;
-    }
-    p {
-      margin: 0.5rem 0;
-      color: #b0f0e0;
-    }
-    span {
-      font-weight: bold;
-      color: #00ffbf;
-    }
-  </style>
+  <title>Fuel Seed Round ROI Calculator</title>
+  <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
-  <div class="container">
-    <h1>Legion ROI calculator</h1>
-    <p>Enter your initial investment and adjust the multiplier to calculate your ROI.</p>
+<body class="bg-black text-gray-200 font-sans">
+  <div class="container mx-auto mt-12 px-6 py-8 bg-gray-900 rounded-lg shadow-lg max-w-md">
+    <h1 class="text-2xl font-bold text-center text-green-400 mb-4">Fuel Seed Round ROI Calculator</h1>
+    <p class="text-sm text-center text-gray-400 mb-6">Enter your investment, adjust the multiplier, and view token price and ROI.</p>
 
     <!-- Input Fields -->
-    <label for="investment">Initial Investment ($):</label>
-    <input type="number" id="investment" placeholder="Enter your investment">
+    <div class="space-y-4">
+      <div>
+        <label for="investment" class="block text-green-400 font-semibold mb-1">Initial Investment ($):</label>
+        <input type="number" id="investment" placeholder="Enter your investment" class="w-full p-2 rounded-md bg-gray-800 text-gray-200 focus:outline-none focus:ring-2 focus:ring-green-400">
+      </div>
 
-    <label for="multiplier">Multiplier (1.2x to 15x):</label>
-    <input type="range" id="multiplier" min="1.2" max="15" step="0.2" value="1.2" oninput="updateMultiplierLabel()">
-    <p>Current Multiplier: <span id="multiplierLabel">1.2</span>x</p>
-    <p>FDV Scaled with Multiplier: <span>$<span id="fdvScaled">240,000,000</span></span></p>
+      <div>
+        <label for="multiplier" class="block text-green-400 font-semibold mb-1">Multiplier (1.2x to 15x):</label>
+        <input type="range" id="multiplier" min="1.2" max="15" step="0.2" value="1.2" oninput="updateMultiplierLabel()" class="w-full h-2 rounded-lg appearance-none bg-green-500">
+        <p class="text-sm mt-2 text-gray-400">Current Multiplier: <span id="multiplierLabel" class="text-green-400 font-bold">1.2</span>x</p>
+      </div>
 
-    <button onclick="calculateROI()">Calculate ROI</button>
+      <div>
+        <p class="text-sm text-gray-400">FDV Scaled with Multiplier: <span id="fdvScaled" class="text-green-400 font-bold">$240,000,000</span></p>
+        <p class="text-sm text-gray-400">Token Price: <span id="tokenPrice" class="text-green-400 font-bold">$0.02</span></p>
+      </div>
+
+      <button onclick="calculateROI()" class="w-full py-2 bg-green-500 hover:bg-green-400 text-black font-bold rounded-md shadow-md transition-transform transform hover:-translate-y-1">Calculate ROI</button>
+    </div>
 
     <!-- Results -->
-    <div id="results" class="result" style="display: none;">
-      <p><strong>Initial Investment:</strong> $<span id="initialInvestment"></span></p>
-      <p><strong>FDV Balance:</strong> $<span id="Launch Price Gains"></span></p>
-      <p><strong>ROI:</strong> $<span id="Total Gain"></span></p>
+    <div id="results" class="mt-6 p-4 bg-gray-800 rounded-md shadow-md hidden">
+      <p class="text-sm text-gray-400"><strong class="text-green-400">Initial Investment:</strong> $<span id="initialInvestment" class="text-gray-200"></span></p>
+      <p class="text-sm text-gray-400"><strong class="text-green-400">FDV Balance:</strong> $<span id="fdvBalance" class="text-gray-200"></span></p>
+      <p class="text-sm text-gray-400"><strong class="text-green-400">ROI:</strong> $<span id="roi" class="text-gray-200"></span></p>
+      <p class="text-sm text-gray-400"><strong class="text-green-400">Token Price:</strong> $<span id="tokenPriceResult" class="text-gray-200"></span></p>
     </div>
   </div>
 
@@ -142,7 +50,7 @@
       const multiplier = document.getElementById("multiplier").value;
       document.getElementById("multiplierLabel").textContent = multiplier;
       const fdvScaled = FDV * multiplier;
-      document.getElementById("fdvScaled").textContent = fdvScaled.toLocaleString();
+      document.getElementById("fdvScaled").textContent = `$${fdvScaled.toLocaleString()}`;
     }
 
     function calculateROI() {
@@ -157,6 +65,7 @@
       // Calculate FDV balance
       const totalTokensPurchased = initialInvestment / TOKEN_COST;
       const fdvBalance = totalTokensPurchased * (FDV / TOTAL_TOKENS) * multiplier;
+      const tokenPrice = (FDV * multiplier) / TOTAL_TOKENS;
 
       // Calculate ROI
       const roi = fdvBalance - initialInvestment;
@@ -165,9 +74,10 @@
       document.getElementById("initialInvestment").textContent = initialInvestment.toFixed(2);
       document.getElementById("fdvBalance").textContent = fdvBalance.toFixed(2);
       document.getElementById("roi").textContent = roi.toFixed(2);
+      document.getElementById("tokenPriceResult").textContent = tokenPrice.toFixed(4);
 
       // Show results
-      document.getElementById("results").style.display = "block";
+      document.getElementById("results").classList.remove("hidden");
     }
   </script>
 </body>
