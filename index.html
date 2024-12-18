@@ -3,12 +3,12 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Fuel Seed Round ROI Calculator</title>
+  <title>Legion ROI</title>
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-black text-gray-200 font-sans">
   <div class="container mx-auto mt-12 px-6 py-8 bg-gray-900 rounded-lg shadow-lg max-w-md">
-    <h1 class="text-2xl font-bold text-center text-green-400 mb-4">Fuel Seed Round ROI Calculator</h1>
+    <h1 class="text-2xl font-bold text-center text-green-400 mb-4">Legion Fuel Investment ROI Calculator</h1>
     <p class="text-sm text-center text-gray-400 mb-6">Enter your investment, adjust the multiplier, and view token price and ROI.</p>
 
     <!-- Input Fields -->
@@ -35,9 +35,8 @@
     <!-- Results -->
     <div id="results" class="mt-6 p-4 bg-gray-800 rounded-md shadow-md hidden">
       <p class="text-sm text-gray-400"><strong class="text-green-400">Initial Investment:</strong> $<span id="initialInvestment" class="text-gray-200"></span></p>
-      <p class="text-sm text-gray-400"><strong class="text-green-400">FDV Balance:</strong> $<span id="fdvBalance" class="text-gray-200"></span></p>
-      <p class="text-sm text-gray-400"><strong class="text-green-400">ROI:</strong> $<span id="roi" class="text-gray-200"></span></p>
-      <p class="text-sm text-gray-400"><strong class="text-green-400">Token Price:</strong> $<span id="tokenPriceResult" class="text-gray-200"></span></p>
+      <p class="text-sm text-gray-400"><strong class="text-green-400">Total Value:</strong> $<span id="fdvBalance" class="text-gray-200"></span></p>
+      <p class="text-sm text-gray-400"><strong class="text-green-400">Total ROI:</strong> $<span id="roi" class="text-gray-200"></span></p>
     </div>
   </div>
 
@@ -76,7 +75,6 @@
       document.getElementById("initialInvestment").textContent = initialInvestment.toFixed(2);
       document.getElementById("fdvBalance").textContent = fdvBalance.toFixed(2);
       document.getElementById("roi").textContent = roi.toFixed(2);
-      document.getElementById("tokenPriceResult").textContent = tokenPrice.toFixed(4);
 
       // Show results
       document.getElementById("results").classList.remove("hidden");
@@ -84,5 +82,6 @@
   </script>
 </body>
 </html>
+
 
 
